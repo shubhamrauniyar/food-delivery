@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState } from "react";
+import Header from "./components/Layout/Header";
+import Meals from "./components/Meals/Meals";
+import Cart from "./components/Cart/Cart";
+import CartProvider from "./Context/CartProvider";
+import ReactDOM from "react-dom";
 function App() {
+  const [cartStatus, setCartStatus] = useState(false);
+  const onCloseClick = () => {
+
+    setCartStatus((prevstate) => {
+      return !prevstate;
+    });
+  };
+  const cartClickHandler = () => {
+    setCartStatus(true);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <CartProvider>
+      <React.Fragment>
+        {cartStatus && <Cart onCloseClick={onCloseClick}></Cart>}
+        <Header onClickCart={cartClickHandler}></Header>
+        <Meals></Meals>
+      </React.Fragment>
+    </CartProvider>
   );
 }
 
